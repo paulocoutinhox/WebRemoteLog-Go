@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	
+	<title>WebRemoteLog</title>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/site.css">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="/static/js/LogHistory.js"></script>
+	
+	<script>
+		var WEB_BASE_URL = '/';
+	</script>
+</head>
+<body>
+
+<div class="wrap">
+	<nav class="navbar navbar-default navbar-static-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+						data-target="#nav-collapse" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">
+					WebRemoteLog
+				</a>
+			</div>
+			<div id="nav-collapse" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/">Página inicial</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div class="home-index">
+		
+		    <div class="jumbotron">
+		        <h1>WebRemoteLog</h1>
+		
+		        <p class="lead">Olá, para iniciar clique no botão abaixo.</p>
+		
+		        <p>
+					<a class="btn btn-lg btn-success" href="/log/index">Iniciar</a>
+				</p>
+		    </div>
+		
+		    <div class="body-content">
+		
+		        <div class="row">
+		            <div class="col-lg-4">
+		                <h2>Log remoto</h2>
+		                <p>Através de qualquer sistema/linguagem vcê pode enviar seus logs para serem guardados e visualizados remotamente</p>
+		            </div>
+		            <div class="col-lg-4">
+		                <h2>API simples</h2>
+		                <p>O sistema funciona a partir de um conjunto de APIs de fácil entendimento, bastando realizar uma requisição HTTP</p>
+		            </div>
+		            <div class="col-lg-4">
+		                <h2>Interface amigável</h2>
+		                <p>O sistema utiliza frameworks web de alto nível para a construção de uma interface simples e amigável</p>
+		            </div>
+		        </div>
+		
+		    </div>
+		</div>
+		
+	</div>
+</div>
+
+<footer class="footer">
+	<div class="container">
+		<p class="pull-left">&copy; WebRemoteLog</p>
+
+		<p class="pull-right">Criado por: <a href="http://www.prsolucoes.com" title="PRSoluções" target="_blank">PRSoluções</a>
+		</p>
+	</div>
+</footer>
+
+</body>
+</html>
