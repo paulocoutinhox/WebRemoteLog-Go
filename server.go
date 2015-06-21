@@ -1,20 +1,21 @@
 package main
 
 import (
-	//"net/http"
+	"net/http"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
     "time"
     "log"
+    "html/template"
 )
 
 type LogHistory struct {
-    id          bson.ObjectId `bson:"_id,omitempty"`
-    debugToken  string        `bson:"debugToken"`
-    logType     string        `bson:"logType"`
-    logMessage  string        `bson:"logMessage"`
-    createdAt   time.Time     `bson:"createdAt"`
+    ID          bson.ObjectId `bson:"_id,omitempty"`
+    DebugToken  string        `bson:"debugToken"`
+    LogType     string        `bson:"logType"`
+    LogMessage  string        `bson:"logMessage"`
+    CreatedAt   time.Time     `bson:"createdAt"`
 }
 
 var (
@@ -22,40 +23,15 @@ var (
 )
 
 func main() {
-    router := gin.Default()
+    // database connection
+    globalSession = getSession()    
 	
-	/*
-    // This handler will match /user/john but will not match neither /user/ or /user
-    router.GET("/user/:name", func(c *gin.Context) {
-        name := c.Param("name")
-        c.String(http.StatusOK, "Hello %s", name)
-    })
-
-    // However, this one will match /user/john/ and also /user/john/send
-    // If no other routers match /user/john, it will redirect to /user/join/
-    router.GET("/user/:name/*action", func(c *gin.Context) {
-        name := c.Param("name")
-        action := c.Param("action")
-        message := name + " is " + action
-        c.String(http.StatusOK, message)
-    })
-    */
-    
-    // conexão com o banco
-    globalSession = getSession()
-    
-    defer globalSession.Close()
-	globalSession.SetMode(mgo.Monotonic, true)
-
-	// rotas
-	router.Static("/static", "resources/static")
-	router.LoadHTMLGlob("resources/*.html")
-
+	// outes
+	router := gin.Default()
+	router.Static("/static", "resources/static")	
 	router.GET("/", index)
-
+	log.Println("Router started : OK")
     router.Run(":8080")
-    
-    log.Fatal("FOI 22!")
 }
 
 func getSession() *mgo.Session {  
@@ -64,24 +40,29 @@ func getSession() *mgo.Session {
     if err != nil {
         panic(err)
     }
-
+	
+	log.Println("Connected to database : OK")
+	
     return s
+}
+
+func renderTemplate(w http.ResponseWriter, templateName string) {
+    tmpl := template.Must(template.ParseFiles("resources/layout.html", "resources/" + templateName + ".html"))
+    tmpl.ExecuteTemplate(w, "layout", nil)
 }
 
 func index(c *gin.Context) {
 	s := globalSession.Clone()
 	defer s.Close()
 	
-	coll := s.DB("WebRemoteLog").C("log_history")
+	coll := s.DB("WebRemoteLog").C("LogHistory")
 	
 	doc := &LogHistory{}
-	doc.id          = bson.NewObjectId()
-	doc.debugToken  = "token-teste-123"
-	doc.logType     = "error"
-	doc.logMessage  = "sjhdsdsadjshdkjsahd jsahdjksahdkjsahd sdjsahdjkashdjkshd sjkahjkahdkjshdksjhdk sdjksdhakjhdkashdksa sadkhskjdhskdjhskd sd sdsjkadhsakjdhaksdh"
-	doc.createdAt   = time.Now()
-	
+	doc.DebugToken  = "token-teste-123"
+	doc.LogType     = "error"
+	doc.LogMessage  = "sjhdsdsadjshdkjsahd jsahdjksahdkjsahd sdjsahdjkashdjkshd sjkahjkahdkjshdksjhdk sdjksdhakjhdkashdksa sadkhskjdhskdjhskd sd sdsjkadhsakjdhaksdh"
+	doc.CreatedAt   = time.Now()	
 	coll.Insert(doc)
 	
-	c.HTML(200, "index.html", nil)
+	renderTemplate(c.Writer, "index")
 }
