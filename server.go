@@ -1,13 +1,10 @@
 package main
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
     "time"
-    "log"
-    "html/template"
 )
 
 type LogHistory struct {
@@ -24,31 +21,10 @@ var (
 
 func main() {
     // database connection
-    globalSession = getSession()    
+    createConnection()
 	
-	// outes
-	router := gin.Default()
-	router.Static("/static", "resources/static")	
-	router.GET("/", index)
-	log.Println("Router started : OK")
-    router.Run(":8080")
-}
-
-func getSession() *mgo.Session {  
-    s, err := mgo.Dial("mongodb://localhost")
-
-    if err != nil {
-        panic(err)
-    }
-	
-	log.Println("Connected to database : OK")
-	
-    return s
-}
-
-func renderTemplate(w http.ResponseWriter, templateName string) {
-    tmpl := template.Must(template.ParseFiles("resources/layout.html", "resources/" + templateName + ".html"))
-    tmpl.ExecuteTemplate(w, "layout", nil)
+	// routes
+	createRoutes()
 }
 
 func index(c *gin.Context) {
