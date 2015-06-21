@@ -5,6 +5,10 @@ import (
     "log"
 )
 
+var (
+	globalSession *mgo.Session
+)
+
 func getSession() *mgo.Session {  
     s, err := mgo.Dial("mongodb://localhost")
 
