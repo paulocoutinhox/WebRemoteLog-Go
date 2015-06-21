@@ -1,0 +1,22 @@
+{{define "content"}}
+<div class="log-token">
+
+    <div class="jumbotron">
+        <h1>WebRemoteLog</h1>
+
+		<p class="lead">Olá, informe um token único que representará a sua sessão de log.</p>
+
+		<form action="/log/index" method="get">
+			<div class="form-group">
+				<label for="token">Token:</label>
+				<input type="text" class="form-control input-lg" id="token" name="token" placeholder="Informe o token da sua sessão" value="" style="text-align: center;">
+			</div>
+
+			<p>
+				<button class="btn btn-lg btn-success" type="submit">Continuar</button>
+			</p>
+		</form>
+    </div>
+
+</div>
+{{end}}
