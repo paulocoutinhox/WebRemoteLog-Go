@@ -5,6 +5,9 @@ import (
     "log"
     "net/http"
     "time"
+    "gopkg.in/mgo.v2/bson"
+    //"fmt"
+    //"encoding/json"
 )
 
 func createRoutes() {
@@ -15,6 +18,7 @@ func createRoutes() {
 	router.GET("/log/index", logIndex)
 	router.GET("/log/token", logToken)
 	router.POST("/api/log/add", apiLogAdd)
+	router.GET("/api/log/list", apiLogList)
 	
 	log.Println("Router started : OK")
     router.Run(":8080")
@@ -50,4 +54,29 @@ func apiLogAdd(c *gin.Context) {
 	doc.LogMessage  = c.PostForm("message")
 	doc.CreatedAt   = time.Now()	
 	coll.Insert(doc)
+}
+
+func apiLogList(c *gin.Context) {
+	token := c.Query("token")
+	
+	s := globalSession.Clone()
+	defer s.Close()
+	
+	coll := s.DB("WebRemoteLog").C("LogHistory")
+	
+	var result []LogHistory
+	err := coll.Find(bson.M{"token": token}).Sort("-createdAt").All(&result)
+	
+    if err != nil {
+        log.Print("Error on list LogHistory: ")
+        log.Println(err)
+    }
+    
+    //c.String(200, result)
+    //fmt.Println("Results All: ", result) 
+    
+    //b, err := json.Marshal(result)
+    c.JSON(200, result)
+    //fmt.Println("Results All: ", b) 
+    //c.String(200, b)
 }
