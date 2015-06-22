@@ -57,7 +57,8 @@ func apiLogAdd(c *gin.Context) {
 }
 
 func apiLogList(c *gin.Context) {
-	token := c.Query("token")
+	token     := c.Query("token")
+	createdAt, err := time.Parse(time.RFC3339, c.Query("created_at"))
 	
 	s := globalSession.Clone()
 	defer s.Close()
@@ -65,18 +66,17 @@ func apiLogList(c *gin.Context) {
 	coll := s.DB("WebRemoteLog").C("LogHistory")
 	
 	var result []LogHistory
-	err := coll.Find(bson.M{"token": token}).Sort("-createdAt").All(&result)
+	err = coll.Find(bson.M{
+		"debugToken": token,
+		"createdAt": bson.M{
+            "$gt": createdAt,
+        },
+	}).Sort("-createdAt").All(&result)
 	
     if err != nil {
         log.Print("Error on list LogHistory: ")
         log.Println(err)
     }
     
-    //c.String(200, result)
-    //fmt.Println("Results All: ", result) 
-    
-    //b, err := json.Marshal(result)
     c.JSON(200, result)
-    //fmt.Println("Results All: ", b) 
-    //c.String(200, b)
 }
