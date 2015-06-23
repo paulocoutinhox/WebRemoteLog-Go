@@ -1,6 +1,6 @@
 {{define "layout"}}
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,8 +13,9 @@
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="/static/js/Util.js"></script>
 	<script src="/static/js/LogHistory.js"></script>
-	
+		
 	<script>
 		var WEB_BASE_URL = '/';
 	</script>
@@ -38,16 +39,14 @@
 				</div>
 				<div id="nav-collapse" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/">Página inicial</a></li>
+						<li><a href="/">Home</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	
-		<div class="container">
-	
+		<div class="{{if .ContainerClass}} {{.ContainerClass}} {{else}} container {{end}}">	
 			{{template "content" .Content}}
-			
 		</div>
 	</div>
 	
@@ -55,7 +54,7 @@
 		<div class="container">
 			<p class="pull-left">&copy; WebRemoteLog</p>
 	
-			<p class="pull-right">Criado por: <a href="http://www.prsolucoes.com" title="PRSoluções" target="_blank">PRSoluções</a>
+			<p class="pull-right">Created By: <a href="http://www.pcoutinho.com" title="Paulo Coutinho" target="_blank">Paulo Coutinho</a>
 			</p>
 		</div>
 	</footer>

@@ -6,8 +6,6 @@ import (
     "net/http"
     "time"
     "gopkg.in/mgo.v2/bson"
-    //"fmt"
-    //"encoding/json"
 )
 
 func createRoutes() {
@@ -25,11 +23,11 @@ func createRoutes() {
 }
 
 func homeIndex(c *gin.Context) {
-	renderTemplate(c.Writer, "home/index")
+	renderTemplate(c.Writer, "home/index", nil)
 }
 
 func logToken(c *gin.Context) {
-	renderTemplate(c.Writer, "log/token")
+	renderTemplate(c.Writer, "log/token", nil)
 }
 
 func logIndex(c *gin.Context) {
@@ -39,7 +37,7 @@ func logIndex(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/log/token")
 	}
 	
-	renderTemplate(c.Writer, "log/index")
+	renderTemplate(c.Writer, "log/index", map[string]string{"ContainerClass": "container-fluid"})
 }
 
 func apiLogAdd(c *gin.Context) {
@@ -57,8 +55,8 @@ func apiLogAdd(c *gin.Context) {
 }
 
 func apiLogList(c *gin.Context) {
-	token     := c.Query("token")
-	createdAt, err := time.Parse(time.RFC3339, c.Query("created_at"))
+	logDebugToken     := c.Query("token")
+	logCreatedAt, err := time.Parse("2006-01-02T15:04:05", c.Query("created_at"))
 	
 	s := globalSession.Clone()
 	defer s.Close()
@@ -67,11 +65,11 @@ func apiLogList(c *gin.Context) {
 	
 	var result []LogHistory
 	err = coll.Find(bson.M{
-		"debugToken": token,
+		"debugToken": logDebugToken,
 		"createdAt": bson.M{
-            "$gt": createdAt,
+            "$gt": logCreatedAt,
         },
-	}).Sort("-createdAt").All(&result)
+	}).Sort("createdAt").All(&result)
 	
     if err != nil {
         log.Print("Error on list LogHistory: ")
