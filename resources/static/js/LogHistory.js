@@ -67,12 +67,15 @@ var LogHistory = new function()
 		   success: function(data) {
 		       if (!Util.isUndefined(data)) 
 		       {
-			       for (var x = 0; x < data.length; x++)
+			       if (data != "")
 			       {
-				       if (!$("#log-row-" + data[x].ID).length > 0)
+				       for (var x = 0; x < data.length; x++)
 				       {
-					       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[0].CreatedAt));
-					       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);    
+					       if (!$("#log-row-" + data[x].ID).length > 0)
+					       {
+						       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[0].CreatedAt));
+						       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);    
+					       }
 				       }
 			       }    
 			       
