@@ -67,7 +67,7 @@ var LogHistory = new function()
 		   success: function(data) {
 		       if (!Util.isUndefined(data)) 
 		       {
-			       if (data != "")
+			       if (data != "" && data != null)
 			       {
 				       for (var x = 0; x < data.length; x++)
 				       {
