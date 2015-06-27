@@ -1,13 +1,9 @@
 package main
 
-import (
-	
-)
-
 func main() {
-    // database connection
-    createConnection()
-	
+	// database connection
+	createConnection()
+
 	// routes
 	createRoutes()
 }
