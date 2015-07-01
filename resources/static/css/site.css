@@ -4,7 +4,6 @@ body {
 }
 
 .navbar {
-	/*margin-bottom: 0;*/
 	background-color: #205081;
 }
 
@@ -154,6 +153,6 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-.table-log {
+.table-log .col1 {
 	text-transform: uppercase;
 }
