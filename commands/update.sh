@@ -14,7 +14,7 @@ echo "> Updated"
 echo "> Building..."
 go build
 echo "> Builded"
-echo "> Log will be store in in: $LOG_FILE"
+echo "> Log will be store in: $LOG_FILE"
 echo "> Starting..."
 nohup $DIR/$EXECUTABLE >> $LOG_FILE 2>&1 </dev/null &
 echo "> Started"
