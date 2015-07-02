@@ -18,7 +18,8 @@ var Util = new function()
             + Util.padNumber(date.getUTCDate())+'T'
             + Util.padNumber(date.getUTCHours())+':'
             + Util.padNumber(date.getUTCMinutes())+':'
-            + Util.padNumber(date.getUTCSeconds());
+            + Util.padNumber(date.getUTCSeconds())+'.'
+            + Util.padNumber(date.getUTCMilliseconds());
     }
 
     this.dateToUserString = function(date)

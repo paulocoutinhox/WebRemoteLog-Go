@@ -12,7 +12,7 @@ var (
 
 func getSession() *mgo.Session {
 	s, err := mgo.Dial("mongodb://localhost")
-
+	
 	if err != nil {
 		panic(err)
 	}

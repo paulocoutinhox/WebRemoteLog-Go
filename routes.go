@@ -57,7 +57,7 @@ func apiLogAdd(c *gin.Context) {
 
 func apiLogList(c *gin.Context) {
 	logDebugToken := c.Query("token")
-	logCreatedAt, err := time.Parse("2006-01-02T15:04:05", c.Query("created_at"))
+	logCreatedAt, err := time.Parse("2006-01-02T15:04:05.999", c.Query("created_at"))
 
 	s := globalSession.Clone()
 	defer s.Close()
