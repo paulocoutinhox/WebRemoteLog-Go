@@ -37,18 +37,7 @@ var LogHistory = new function()
 		
 		var html = '<tr id="log-row-' + id + '" class="log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2">' + message + '</td><td class="col3">' + Util.dateToUserString(new Date(createdAt)) + '</td></tr>';
 		
-		$('#table-log').prepend(html);	
-		
-		/*
-		if (this.firstTime)
-		{
-		    $('#table-log').append(html);	
-		}
-		else
-		{
-			$('#table-log').prepend('sdasdsd' + html);
-		}
-		*/
+		$('#table-log').prepend(html);
 	}
 
 	this.getNewest = function()
@@ -60,8 +49,10 @@ var LogHistory = new function()
 		
 		isGettingNewest = true;
 		
+		var lastDateTime = (Util.isUndefined(this.lastDateTime) ? "" : this.lastDateTime);
+		
 	    $.ajax({
-		   url: '/api/log/list?token=' + this.token + "&created_at=" + this.lastDateTime,
+		   url: '/api/log/list?token=' + this.token + "&created_at=" + lastDateTime,
 		   type: 'GET',
 		   dataType: 'json',
 		   success: function(data) {
@@ -73,7 +64,7 @@ var LogHistory = new function()
 				       {
 					       if (!$("#log-row-" + data[x].ID).length > 0)
 					       {
-						       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[0].CreatedAt));
+						       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[x].CreatedAt));
 						       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);    
 					       }
 				       }
