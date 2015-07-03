@@ -1,10 +1,12 @@
 var LogHistory = new function()
 {
 
-	var token = "";
-	var lastDateTime = "";
+	var token           = "";
+	var lastDateTime    = null;
 	var isGettingNewest = false;
-	var firstTime = true;
+	var firstTime       = true;
+
+	this.lastDateTime = Util.dateToMongoDateString(new Date());
 
 	this.addLog = function(id, type, message, createdAt)
 	{
@@ -49,10 +51,10 @@ var LogHistory = new function()
 		
 		isGettingNewest = true;
 		
-		var lastDateTime = (Util.isUndefined(this.lastDateTime) ? "" : this.lastDateTime);
+		var lastDateTimeToSend = (Util.isUndefined(this.lastDateTime) ? "" : this.lastDateTime);
 		
 	    $.ajax({
-		   url: '/api/log/list?token=' + this.token + "&created_at=" + lastDateTime,
+		   url: '/api/log/list?token=' + this.token + "&created_at=" + lastDateTimeToSend,
 		   type: 'GET',
 		   dataType: 'json',
 		   success: function(data) {
