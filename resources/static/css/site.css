@@ -153,8 +153,24 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-.table-log .col1 {
+.table-log .col1,
+.table-log .col3 {
 	text-transform: uppercase;
+	text-align: center
+}
+
+.table-log .col2 {
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
+
+.table-log td.col2 {
+	cursor: pointer;
 }
 
 .scroll-top-wrapper {
@@ -203,4 +219,8 @@ a.desc:after {
 
 .no-footer {
 	display: none;
+}
+
+.logDetailsBlockTitle {
+	font-weight: bold;
 }

@@ -42,6 +42,16 @@ var Util = new function()
             + Util.padNumber(date.getUTCSeconds());
     }
 
+    this.dateToUserStringUsingHTML = function(date)
+    {
+        return date.getUTCFullYear()+'-'
+            + Util.padNumber(date.getUTCMonth()+1)+'-'
+            + Util.padNumber(date.getUTCDate())+' <br /> '
+            + Util.padNumber(date.getUTCHours())+':'
+            + Util.padNumber(date.getUTCMinutes())+':'
+            + Util.padNumber(date.getUTCSeconds());
+    }
+
     this.padNumber = function(number)
     {
         return (number < 10 ? '0' + number : number);
@@ -56,7 +66,7 @@ var Util = new function()
 	{
 		if (Util.isUndefined(message))
 		{
-			message = '<p>Estamos processando sua solicitação.</p><p>Por favor, aguarde alguns instantes...</p>';
+			message = '<p>We are processing your request.</p><p>Please, wait a minute...</p>';
 		}
 
 		$('#modalProgressWindowMessage').html(message);
@@ -78,7 +88,7 @@ var Util = new function()
 
 		if (Util.isUndefined(errors))
 		{
-			message = 'Ocorreu um erro ao processar sua solicitação, tente novamente!';
+			message = 'Error when process your request. Please, try again!';
 		}
 		else if (errors instanceof Array && errors.length > 0)
 		{
@@ -100,7 +110,7 @@ var Util = new function()
 	{
 		if (Util.isUndefined(message))
 		{
-			message = 'Sua solicitação foi processada com sucesso!';
+			message = 'Your request was processed successfully!';
 		}
 
 		$('#modalSuccessWindowMessage').html(message);
@@ -138,6 +148,16 @@ var Util = new function()
 	this.scrollToBottom = function() 
 	{
 		$('html, body').animate({scrollTop: $(document).height()-$(window).height()}, 100, 'linear');
+	}
+	
+	this.isOnBottomOfDocument = function() 
+	{
+		if($(window).scrollTop() + $(window).height() == $(document).height()) 
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 };

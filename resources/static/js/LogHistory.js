@@ -1,12 +1,35 @@
 var LogHistory = new function()
 {
 
-	var token           = "";
-	var lastDateTime    = null;
-	var isGettingNewest = false;
-	var firstTime       = true;
+	var token                = "";
+	var lastDateTime         = null;
+	var isGettingNewest      = false;
+	var firstTime            = true;
+	var isOnBottomOfDocument = false;
 
 	this.lastDateTime = Util.dateToMongoDateString(new Date());
+
+	this.initialize = function()
+	{
+		$('.scroll-top-wrapper').addClass('show');
+		
+		$('#logDetailsModal, #optionsModal').on('show.bs.modal', function(event) {
+			$('.scroll-top-wrapper').removeClass('show');
+			$('.scroll-top-wrapper').addClass('hidden');
+		});
+		
+		$('#logDetailsModal, #optionsModal').on('hidden.bs.modal', function(event) {
+			$('.scroll-top-wrapper').removeClass('hidden');
+			$('.scroll-top-wrapper').addClass('show');
+		});
+		
+		$('#logDetailsModal').on('shown.bs.modal', function(event) {
+			$('#logDetailsMessage').focus().select();			
+		});	
+		
+		LogHistory.getToken();
+		LogHistory.startAutoGetNewest();
+	}
 
 	this.addLog = function(id, type, message, createdAt)
 	{
@@ -37,7 +60,16 @@ var LogHistory = new function()
 			typeHtml = '<span class="label label-default">' + type + '</span>';
 		}
 		
-		var html = '<tr id="log-row-' + id + '" class="log-row log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2">' + message + '</td><td class="col3">' + Util.dateToUserString(new Date(createdAt)) + '</td></tr>';
+		var html = '<tr id="log-row-' + id + '" class="log-row log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2" onclick="LogHistory.showDetails(\'' + id + '\')">' + message + '</td><td class="col3">' + Util.dateToUserStringUsingHTML(new Date(createdAt)) + '</td></tr>';
+		
+		if (Util.isOnBottomOfDocument())
+		{
+			this.isOnBottomOfDocument = true;
+		}
+		else
+		{
+			this.isOnBottomOfDocument = false;
+		}
 		
 		$('#table-log').append(html);
 	}
@@ -73,7 +105,10 @@ var LogHistory = new function()
 				       
 				       if ($('#chkAutoScrollBottom').is(':checked')) 
 				       {
-					       Util.scrollToBottom();
+					       if (LogHistory.isOnBottomOfDocument)
+					       {
+					           Util.scrollToBottom();
+					       }
 				       }
 			       }    
 			       
@@ -123,6 +158,14 @@ var LogHistory = new function()
 		      // ignore
 		   }
 		});
+	}
+	
+	this.showDetails = function(logId)
+	{		
+		$('#logDetailsType').html($('#log-row-' + logId + ' > td.col1').html());
+		$('#logDetailsMessage').text($('#log-row-' + logId + ' > td.col2').html());
+		$('#logDetailsCreatedAt').html($('#log-row-' + logId + ' > td.col3').html());				
+		$('#logDetailsModal').modal();
 	}
 	
 };

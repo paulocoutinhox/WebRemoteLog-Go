@@ -17,12 +17,14 @@
 
 </div>
 
+<!-- SCROLL TO TOP - WRAPPER -->
 <div class="scroll-top-wrapper" data-toggle="modal" data-target="#optionsModal">
 	<span class="scroll-top-inner">
 		<i class="fa fa-2x fa-arrow-circle-up"></i>
 	</span>
 </div>
 
+<!-- MODAL - OPTIONS -->
 <div class="modal fade" id="optionsModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -50,7 +52,7 @@
 	        <button type="button" class="btn btn-danger" onclick="LogHistory.clear()">Clear log list</button>
         </p>
         <p>
-	        <button type="button" class="btn btn-danger" onclick="LogHistory.deleteAllByToken()">Delete all logs from current token and clear</button>
+	        <button type="button" class="btn btn-danger" onclick="LogHistory.deleteAllByToken()">Delete all logs and clear</button>
         </p>
       </div>
       <div class="modal-footer">
@@ -60,12 +62,44 @@
   </div>
 </div>
 
+<!-- MODAL - LOG - DETAILS -->
+<div class="modal fade" id="logDetailsModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Log details</h4>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <p>
+	        <span class="logDetailsBlockTitle">Type: </span>
+	        <br />
+	        <span id="logDetailsType"></span>
+        </p>
+        <hr />
+        <p>
+	        <span class="logDetailsBlockTitle">Created at: </span>
+	        <br />
+	        <span id="logDetailsCreatedAt"></span>
+        </p>
+        <hr />
+        <p>
+	        <span class="logDetailsBlockTitle">Message: </span>
+	        <br />
+	        <textarea class="form-control" rows="5" id="logDetailsMessage"></textarea>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STARTUP -->
 <script>
 	$(document).ready(function() {
-		LogHistory.getToken();
-		LogHistory.startAutoGetNewest();
-		
-		$('.scroll-top-wrapper').addClass('show');
+		LogHistory.initialize();
 	});
 </script>	
 
