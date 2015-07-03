@@ -196,3 +196,11 @@ a.desc:after {
 .scroll-top-wrapper i.fa {
 	line-height: inherit;
 }
+
+.wrap-log {
+	padding-bottom: 0;
+}
+
+.no-footer {
+	display: none;
+}

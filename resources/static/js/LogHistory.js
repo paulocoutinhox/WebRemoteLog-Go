@@ -84,7 +84,6 @@ var LogHistory = new function()
 		       isGettingNewest = false;
 		   },
 		   error: function() {
-		      console.log("Error when get newest log!");
 		      isGettingNewest = false;
 		   }
 		});
@@ -103,6 +102,25 @@ var LogHistory = new function()
 	this.clear = function()
 	{
 		$('.log-row').remove();
+	}
+	
+	this.deleteAllByToken = function()
+	{
+		$.ajax({
+		   url: '/api/log/deleteAll?token=' + this.token,
+		   type: 'GET',
+		   dataType: 'json',
+		   success: function(data) {
+			   if ($('#chkAutoScrollBottom').is(':checked')) 
+		       {
+			       LogHistory.clear();
+			       Util.scrollToBottom();
+		       }
+		   },
+		   error: function() {
+		      // ignore
+		   }
+		});
 	}
 	
 };

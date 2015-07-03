@@ -18,6 +18,7 @@ func createRoutes() {
 	router.GET("/log/token", logToken)
 	router.POST("/api/log/add", apiLogAdd)
 	router.GET("/api/log/list", apiLogList)
+	router.GET("/api/log/deleteAll", apiLogDeleteAll)
 
 	log.Println("Router started : OK")
 	router.Run(":8080")
@@ -38,7 +39,7 @@ func logIndex(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/log/token")
 	}
 
-	renderTemplate(c.Writer, "log/index", map[string]string{"ContainerClass": "container-fluid"})
+	renderTemplate(c.Writer, "log/index", map[string]string{"ContainerClass": "container-fluid", "WrapClass": "wrap-log", "FooterClass": "no-footer"})
 }
 
 func apiLogAdd(c *gin.Context) {
@@ -49,9 +50,9 @@ func apiLogAdd(c *gin.Context) {
 
 	doc := &LogHistory{}
 	doc.DebugToken = c.PostForm("token")
-	doc.LogType = c.PostForm("type")
+	doc.LogType    = c.PostForm("type")
 	doc.LogMessage = c.PostForm("message")
-	doc.CreatedAt = time.Now()
+	doc.CreatedAt  = time.Now()
 	coll.Insert(doc)
 }
 
@@ -79,3 +80,25 @@ func apiLogList(c *gin.Context) {
 
 	c.JSON(200, result)
 }
+
+func apiLogDeleteAll(c *gin.Context) {
+	logDebugToken := c.Query("token")
+
+	s := globalSession.Clone()
+	defer s.Close()
+
+	coll := s.DB("WebRemoteLog").C("LogHistory")
+
+	var result []LogHistory
+	_, err := coll.RemoveAll(bson.M{
+		"debugToken": logDebugToken,
+	})
+
+	if err != nil {
+		log.Print("Error on delete all LogHistory: ")
+		log.Println(err)
+	}
+
+	c.JSON(200, result)
+}
+
