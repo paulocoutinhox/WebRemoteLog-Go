@@ -125,5 +125,19 @@ var Util = new function()
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	
+	this.scrollToTop = function() 
+	{
+		verticalOffset = typeof(verticalOffset) != 'undefined' ? verticalOffset : 0;
+		element = $('body');
+		offset = element.offset();
+		offsetTop = offset.top;
+		$('html, body').animate({scrollTop: offsetTop}, 100, 'linear');
+	}
+
+	this.scrollToBottom = function() 
+	{
+		$('html, body').animate({scrollTop: $(document).height()-$(window).height()}, 100, 'linear');
+	}
 
 };

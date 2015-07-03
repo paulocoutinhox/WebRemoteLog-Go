@@ -35,9 +35,9 @@ var LogHistory = new function()
 			typeHtml = '<span class="label label-default">' + type + '</span>';
 		}
 		
-		var html = '<tr id="log-row-' + id + '" class="log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2">' + message + '</td><td class="col3">' + Util.dateToUserString(new Date(createdAt)) + '</td></tr>';
+		var html = '<tr id="log-row-' + id + '" class="log-row log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2">' + message + '</td><td class="col3">' + Util.dateToUserString(new Date(createdAt)) + '</td></tr>';
 		
-		$('#table-log').prepend(html);
+		$('#table-log').append(html);
 	}
 
 	this.getNewest = function()
@@ -68,6 +68,11 @@ var LogHistory = new function()
 						       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);    
 					       }
 				       }
+				       
+				       if ($('#chkAutoScrollBottom').is(':checked')) 
+				       {
+					       Util.scrollToBottom();
+				       }
 			       }    
 			       
 			       if (LogHistory.firstTime)
@@ -93,6 +98,11 @@ var LogHistory = new function()
 	this.startAutoGetNewest = function()
 	{
 		setInterval(function(){ LogHistory.getNewest(); }, 1000);
+	}
+	
+	this.clear = function()
+	{
+		$('.log-row').remove();
 	}
 	
 };

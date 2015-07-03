@@ -7,7 +7,7 @@
 			<tr>
 				<th class="col1">TYPE</th>
 				<th class="col2">MESSAGE</th>
-				<th class="col3">CREATED AT</th>
+				<th class="col3" style="white-space: nowrap;">CREATED AT</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -17,10 +17,55 @@
 
 </div>
 
+<div class="scroll-top-wrapper" data-toggle="modal" data-target="#optionsModal">
+	<span class="scroll-top-inner">
+		<i class="fa fa-2x fa-arrow-circle-up"></i>
+	</span>
+</div>
+
+<div class="modal fade" id="optionsModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Options</h4>
+      </div>
+      <div class="modal-body" style="text-align: center">
+	    <p>
+	        <div class="checkbox">
+				<label>
+					<input type="checkbox" id="chkAutoScrollBottom" checked="checked"> Auto scroll to bottom 
+				</label>
+			</div>
+        </p>
+        <hr />
+        <p>
+	        <button type="button" class="btn btn-primary" onclick="Util.scrollToTop()">Scroll to Top</button>
+        </p>
+        <p>
+	        <button type="button" class="btn btn-primary" onclick="Util.scrollToBottom()">Scroll to Bottom</button>
+        </p>
+        <hr />
+        <p>
+	        <button type="button" class="btn btn-danger" onclick="LogHistory.clear()">Clear log list</button>
+        </p>
+        <p>
+	        <button type="button" class="btn btn-danger" onclick="LogHistory.delete()">Delete all logs from current token and clear</button>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 	$(document).ready(function() {
 		LogHistory.getToken();
 		LogHistory.startAutoGetNewest();
+		
+		$('.scroll-top-wrapper').addClass('show');
 	});
 </script>	
 
