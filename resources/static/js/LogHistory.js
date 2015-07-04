@@ -182,6 +182,8 @@ var LogHistory = new function()
 	{		
 		this.filterMessageTmp = '';
 		$('#filterMessage').val('');
+		this.resetRequest();		
+		this.clear();
 	}
 	
 	this.showLogFilters = function(show)
