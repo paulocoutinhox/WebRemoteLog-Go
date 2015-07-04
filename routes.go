@@ -74,7 +74,7 @@ func apiLogList(c *gin.Context) {
 	if filterMessage == "" {
 		conditions["createdAt"]  = bson.M{"$gt": logCreatedAt}		
 	} else {
-		conditions["logMessage"] = bson.RegEx{Pattern: filterMessage}	
+		conditions["logMessage"] = bson.RegEx{Pattern: filterMessage, Options: "i"}	
 	}
 
 	err := coll.Find(conditions).Sort("createdAt").All(&results)
