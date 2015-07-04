@@ -198,13 +198,19 @@ var LogHistory = new function()
 	
 	this.applyFilters = function()
 	{	
+		this.resetRequest();
+		this.filterMessageTmp = $('#filterMessage').val();
+		this.clear();
+	}
+	
+	this.resetRequest = function()
+	{
 		if (!Util.isUndefined(this.request))
 		{	
 			this.request.abort();
 		}
 		
-		this.filterMessageTmp = $('#filterMessage').val();
-		this.clear();
+		isGettingNewest = false;
 	}
 	
 };
