@@ -106,6 +106,11 @@ var LogHistory = new function()
 			       {
 				       for (var x = 0; x < data.length; x++)
 				       {
+					       if (Util.isUndefined(LogHistory.request))
+					       {
+						       return;
+					       }
+					       
 					       if (!$("#log-row-" + data[x].ID).length > 0)
 					       {
 						       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[x].CreatedAt));
