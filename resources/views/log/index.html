@@ -1,6 +1,22 @@
 {{define "content"}}
 <div class="log-index">
 
+	<!-- FILTERS -->
+	<div id="filtersContainer" class="filters-container-box">
+		
+		<h4>FILTERS</h4>
+		
+		<div class="form-group">
+			<label for="filter-message">Message</label>
+			<input type="text" class="form-control" id="filterMessage" placeholder="Type query for message and apply" autocomplete="off">
+		</div>
+		<button type="button" class="btn btn-primary" onclick="LogHistory.showLogFilters(false)">Hide</button>
+		<button type="button" class="btn btn-primary" onclick="LogHistory.clearLogFilters()">Clear</button>
+		<button type="button" class="btn btn-success" onclick="LogHistory.applyFilters()">Apply</button>
+		
+	</div>
+
+	<!-- TABLE - DATA -->
 	<div class="table-responsive">
 		<table id="table-log" class="table table-condensed table-striped table-hover table-log">
 			<thead>
@@ -34,11 +50,9 @@
       </div>
       <div class="modal-body" style="text-align: center">
 	    <p>
-	        <div class="checkbox">
-				<label>
-					<input type="checkbox" id="chkAutoScrollBottom" checked="checked"> Auto scroll to bottom 
-				</label>
-			</div>
+		    <label class="checkbox-inline">
+				<input type="checkbox" id="chkAutoScrollBottom" checked="checked"> Auto scroll to bottom
+			</label>
         </p>
         <hr />
         <p>
@@ -46,6 +60,13 @@
         </p>
         <p>
 	        <button type="button" class="btn btn-primary" onclick="Util.scrollToBottom()">Scroll to Bottom</button>
+        </p>
+        <hr />
+        <p>
+	        <button type="button" class="btn btn-primary" onclick="LogHistory.showLogFilters(true)">Show filters</button>
+        </p>
+        <p>
+	        <button type="button" class="btn btn-primary" onclick="LogHistory.showLogFilters(false)">Hide filters</button>
         </p>
         <hr />
         <p>

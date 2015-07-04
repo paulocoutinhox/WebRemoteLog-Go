@@ -6,6 +6,8 @@ var LogHistory = new function()
 	var isGettingNewest      = false;
 	var firstTime            = true;
 	var isOnBottomOfDocument = false;
+	var filterMessageTmp     = "";
+	var request;
 
 	this.lastDateTime = Util.dateToMongoDateString(new Date());
 
@@ -26,6 +28,13 @@ var LogHistory = new function()
 		$('#logDetailsModal').on('shown.bs.modal', function(event) {
 			$('#logDetailsMessage').focus().select();			
 		});	
+		
+		$('#filterMessage').on('keyup',function(event) {
+			if(event.keyCode == 13)
+		    {
+			    LogHistory.applyFilters();
+		    }
+		});
 		
 		LogHistory.getToken();
 		LogHistory.startAutoGetNewest();
@@ -83,10 +92,11 @@ var LogHistory = new function()
 		
 		isGettingNewest = true;
 		
-		var lastDateTimeToSend = (Util.isUndefined(this.lastDateTime) ? "" : this.lastDateTime);
+		var lastDateTimeToSend     = (Util.isUndefined(this.lastDateTime) ? "" : this.lastDateTime);
+		var filterMessageTmpToSend = (Util.isUndefined(this.filterMessageTmp) ? "" : this.filterMessageTmp);
 		
-	    $.ajax({
-		   url: '/api/log/list?token=' + this.token + "&created_at=" + lastDateTimeToSend,
+	    this.request = $.ajax({
+		   url: '/api/log/list?token=' + this.token + "&created_at=" + lastDateTimeToSend + "&filter-message=" + filterMessageTmpToSend,
 		   type: 'GET',
 		   dataType: 'json',
 		   success: function(data) {
@@ -166,6 +176,35 @@ var LogHistory = new function()
 		$('#logDetailsMessage').text($('#log-row-' + logId + ' > td.col2').html());
 		$('#logDetailsCreatedAt').html($('#log-row-' + logId + ' > td.col3').html());				
 		$('#logDetailsModal').modal();
+	}
+	
+	this.clearLogFilters = function()
+	{		
+		this.filterMessageTmp = '';
+		$('#filterMessage').val('');
+	}
+	
+	this.showLogFilters = function(show)
+	{		
+		if (show)
+		{
+			$('#filtersContainer').show();
+		}
+		else
+		{
+			$('#filtersContainer').hide();			
+		}
+	}
+	
+	this.applyFilters = function()
+	{	
+		if (!Util.isUndefined(this.request))
+		{	
+			this.request.abort();
+		}
+		
+		this.filterMessageTmp = $('#filterMessage').val();
+		this.clear();
 	}
 	
 };

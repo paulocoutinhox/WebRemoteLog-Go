@@ -224,3 +224,17 @@ a.desc:after {
 .logDetailsBlockTitle {
 	font-weight: bold;
 }
+
+.filters-container-box {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	padding: 10px;
+	margin: 15px;
+	margin-bottom: 30px;
+}
+
+.filters-container-box h4 {
+	margin: 0 0 10px 0;
+}

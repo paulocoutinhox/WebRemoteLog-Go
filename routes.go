@@ -57,28 +57,34 @@ func apiLogAdd(c *gin.Context) {
 }
 
 func apiLogList(c *gin.Context) {
-	logDebugToken := c.Query("token")
-	logCreatedAt, err := time.Parse("2006-01-02T15:04:05.999", c.Query("created_at"))
+	logDebugToken     := c.Query("token")
+	logCreatedAt, _   := time.Parse("2006-01-02T15:04:05.999", c.Query("created_at"))
+	filterMessage     := c.Query("filter-message")
 
 	s := globalSession.Clone()
 	defer s.Close()
 
 	coll := s.DB("WebRemoteLog").C("LogHistory")
 
-	var result []LogHistory
-	err = coll.Find(bson.M{
-		"debugToken": logDebugToken,
-		"createdAt": bson.M{
-			"$gt": logCreatedAt,
-		},
-	}).Sort("createdAt").All(&result)
+	var results []LogHistory
+	var conditions = bson.M{}
+	
+	conditions["debugToken"] = logDebugToken
+	
+	if filterMessage == "" {
+		conditions["createdAt"]  = bson.M{"$gt": logCreatedAt}		
+	} else {
+		conditions["logMessage"] = bson.RegEx{Pattern: filterMessage}	
+	}
+
+	err := coll.Find(conditions).Sort("createdAt").All(&results)
 
 	if err != nil {
 		log.Print("Error on list LogHistory: ")
 		log.Println(err)
 	}
 
-	c.JSON(200, result)
+	c.JSON(200, results)
 }
 
 func apiLogDeleteAll(c *gin.Context) {
