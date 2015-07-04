@@ -106,7 +106,7 @@ var LogHistory = new function()
 			       {
 				       for (var x = 0; x < data.length; x++)
 				       {
-					       if (Util.isUndefined(LogHistory.request))
+					       if (Util.isUndefined(LogHistory.request) || LogHistory.request == null)
 					       {
 						       return;
 					       }
@@ -215,6 +215,7 @@ var LogHistory = new function()
 		if (!Util.isUndefined(this.request))
 		{	
 			this.request.abort();
+			this.request = null;
 		}
 		
 		isGettingNewest = false;
