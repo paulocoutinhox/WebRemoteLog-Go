@@ -1,5 +1,4 @@
 .DS_Store
-WebRemoteLog-Go.iml
+*.iml
 .idea
 WebRemoteLog-Go
-.idea

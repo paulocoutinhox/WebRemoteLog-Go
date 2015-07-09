@@ -20,7 +20,7 @@ To run you need a MongoDB running on localhost:
 # WebRemoteLog-Go - Log Entity
 
 1. token = your session token, because you can see only logs from specific session token.
-2. type = can be any knowed type of level log (error, fatal, info, warning, trace, debug, verbose, echo, warning, success)
+2. type = can be any knew type of level log (error, fatal, info, warning, trace, debug, verbose, echo, warning, success)
 3. message = any log message
 
 # WebRemoteLog-Go - Command line interface

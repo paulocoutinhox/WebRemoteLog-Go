@@ -114,15 +114,15 @@ var LogHistory = new function()
 					       if (!$("#log-row-" + data[x].ID).length > 0)
 					       {
 						       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[x].CreatedAt));
-						       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);    
-					       }
-				       }
-				       
-				       if ($('#chkAutoScrollBottom').is(':checked')) 
-				       {
-					       if (LogHistory.isOnBottomOfDocument)
-					       {
-					           Util.scrollToBottom();
+						       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);
+
+						       if ($('#chkAutoScrollBottom').is(':checked'))
+							   {
+								   if (LogHistory.isOnBottomOfDocument)
+								   {
+									   Util.scrollToBottom();
+								   }
+							   }
 					       }
 				       }
 			       }    
