@@ -8,7 +8,6 @@ var LogHistory = new function()
 	var isOnBottomOfDocument = false;
 	var filterMessageTmp     = "";
 	var request;
-	var requestToClean;
 
 	this.lastDateTime = Util.dateToMongoDateString(new Date());
 
