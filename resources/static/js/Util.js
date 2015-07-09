@@ -142,7 +142,7 @@ var Util = new function()
 		element = $('body');
 		offset = element.offset();
 		offsetTop = offset.top;
-		$('html, body').animate({scrollTop: offsetTop}, 100, 'linear');
+		$('html, body').animate({scrollTop: offsetTop}, 0, 'linear');
 	}
 
 	this.scrollToBottom = function() 
