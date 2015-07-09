@@ -231,12 +231,13 @@ var LogHistory = new function()
 
 	this.removeOldLogsFromPage = function()
 	{
-		var offset = 200;
-		var total  = $('.log-row').length;
+		var offset         = 200;
+		var total          = $('.log-row').length;
+		var offsetToRemove = (total - offset);
 
 		if (total > offset)
 		{
-			$('.log-row').slice(0, offset).remove();
+			$('.log-row').slice(0, offsetToRemove).remove();
 		}
 	}
 
