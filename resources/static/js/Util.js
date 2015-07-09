@@ -46,7 +46,7 @@ var Util = new function()
     {
         return date.getUTCFullYear()+'-'
             + Util.padNumber(date.getUTCMonth()+1)+'-'
-            + Util.padNumber(date.getUTCDate())+' <br /> '
+            + Util.padNumber(date.getUTCDate())+'<br /> '
             + Util.padNumber(date.getUTCHours())+':'
             + Util.padNumber(date.getUTCMinutes())+':'
             + Util.padNumber(date.getUTCSeconds());
