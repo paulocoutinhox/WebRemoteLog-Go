@@ -8,6 +8,7 @@ var LogHistory = new function()
 	var isOnBottomOfDocument = false;
 	var filterMessageTmp     = "";
 	var request;
+	var requestToClean;
 
 	this.lastDateTime = Util.dateToMongoDateString(new Date());
 
@@ -38,6 +39,7 @@ var LogHistory = new function()
 		
 		LogHistory.getToken();
 		LogHistory.startAutoGetNewest();
+		LogHistory.startAutoClean();
 	}
 
 	this.addLog = function(id, type, message, createdAt)
@@ -148,9 +150,16 @@ var LogHistory = new function()
 	
 	this.startAutoGetNewest = function()
 	{
-		setInterval(function(){ LogHistory.getNewest(); }, 1000);
+		var seconds = 1;
+		setInterval(function(){ LogHistory.getNewest(); }, (seconds * 1000));
 	}
-	
+
+	this.startAutoClean = function()
+	{
+		var seconds = 10;
+		setInterval(function(){ LogHistory.removeOldLogsFromPage(); }, (seconds * 1000));
+	}
+
 	this.clear = function()
 	{
 		$('.log-row').remove();
@@ -220,5 +229,16 @@ var LogHistory = new function()
 		
 		isGettingNewest = false;
 	}
-	
+
+	this.removeOldLogsFromPage = function()
+	{
+		var offset = 200;
+		var total  = $('.log-row').length;
+
+		if (total > offset)
+		{
+			$('.log-row').slice(0, offset).remove();
+		}
+	}
+
 };
