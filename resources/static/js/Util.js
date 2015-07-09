@@ -147,7 +147,7 @@ var Util = new function()
 
 	this.scrollToBottom = function() 
 	{
-		$('html, body').animate({scrollTop: $(document).height()-$(window).height()}, 100, 'linear');
+		$('html, body').animate({scrollTop: $(document).height()-$(window).height()}, 0, 'linear');
 	}
 	
 	this.isOnBottomOfDocument = function() 
