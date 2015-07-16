@@ -51,6 +51,18 @@ var Util = new function()
             + Util.padNumber(date.getUTCMinutes())+':'
             + Util.padNumber(date.getUTCSeconds());
     }
+    
+    this.convertUTCDateToLocalDate = function(date) 
+    {
+	    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+	
+	    var offset = date.getTimezoneOffset() / 60;
+	    var hours = date.getHours();
+	
+	    newDate.setHours(hours - offset);
+	
+	    return newDate;   
+	}
 
     this.padNumber = function(number)
     {

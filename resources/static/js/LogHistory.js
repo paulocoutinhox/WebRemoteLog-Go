@@ -70,7 +70,9 @@ var LogHistory = new function()
 			typeHtml = '<span class="label label-default">' + type + '</span>';
 		}
 		
-		var html = '<tr id="log-row-' + id + '" class="log-row log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2" onclick="LogHistory.showDetails(\'' + id + '\')">' + message + '</td><td class="col3">' + Util.dateToUserStringUsingHTML(new Date(createdAt)) + '</td></tr>';
+		var createdAtConverted = Util.dateToUserStringUsingHTML(Util.convertUTCDateToLocalDate(new Date(createdAt)));
+		
+		var html = '<tr id="log-row-' + id + '" class="log-row log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2" onclick="LogHistory.showDetails(\'' + id + '\')">' + message + '</td><td class="col3">' + createdAtConverted + '</td></tr>';
 		
 		if (Util.isOnBottomOfDocument())
 		{
