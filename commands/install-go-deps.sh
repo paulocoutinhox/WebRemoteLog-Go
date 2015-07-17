@@ -1,0 +1,5 @@
+echo "> Installing all Go dependencies..."
+go get "gopkg.in/mgo.v2"
+go get "gopkg.in/mgo.v2/bson"
+go get "github.com/gin-gonic/gin"
+echo "> All Go dependencies was installed"
