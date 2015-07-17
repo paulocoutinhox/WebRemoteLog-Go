@@ -35,8 +35,8 @@ So if you want start your server, you can use "start" command to do it for you.
 
 # WebRemoteLog-Go - Alternative method to Build and Start project
 
-1 - go build
-2 - ./WebRemoteLog-Go
+1. go build
+2. ./WebRemoteLog-Go
 
 # WebRemoteLog-Go - Author WebSite
 
