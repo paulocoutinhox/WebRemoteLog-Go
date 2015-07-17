@@ -6,9 +6,9 @@ To run you need a MongoDB running on localhost:
 2. Create a database with name: WebRemoteLog
 3. Create a collection with name: LogHistory
 4. Execute: git clone git@github.com:prsolucoes/WebRemoteLog-Go.git  
-5. Execute: cd WebRemoteLog-Go  
-6. Execute: go build  
-7. Execute: ./WebRemoteLog-Go  
+5. Execute: cd WebRemoteLog-Go
+6. Execute: ./commands/install-go-deps.sh  
+7. Execute: ./commands/start.sh  
 8. Open in your browser: http://localhost:8080  
 
 # WebRemoteLog-Go - API
@@ -32,6 +32,11 @@ Inside "commands" directory, you have some command line interface to make someth
 3. update  = it will update code from git, rebuild the service and restart the service for you
 
 So if you want start your server, you can use "start" command to do it for you.
+
+# WebRemoteLog-Go - Alternative method to Build and Start project
+
+1 - go build
+2 - ./WebRemoteLog-Go
 
 # WebRemoteLog-Go - Author WebSite
 
