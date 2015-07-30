@@ -41,3 +41,7 @@ So if you want start your server, you can use "start" command to do it for you.
 # WebRemoteLog-Go - Author WebSite
 
 > http://www.pcoutinho.com
+
+# WebRemoteLog-Go - License
+
+MIT
