@@ -1,47 +1,95 @@
-# WebRemoteLog-Go
+WebRemoteLog-Go
+===============
+> An API to manage remote log messages
 
-To run you need a MongoDB running on localhost:
+WebRemoteLog-Go provides an API to store the log messages and a web interface
+to see and query the data into database.
 
-1. Start your mongodb  
-2. Create a database with name: WebRemoteLog
-3. Create a collection with name: LogHistory
-4. Execute: git clone git@github.com:prsolucoes/WebRemoteLog-Go.git  
-5. Execute: cd WebRemoteLog-Go
-6. Execute: ./commands/install-go-deps.sh  
-7. Execute: ./commands/start.sh  
-8. Open in your browser: http://localhost:8080  
+## Requirements
 
-# WebRemoteLog-Go - API
+* MongoDB server
+* Golang environment
 
-1. List(GET): http://localhost:8080/api/log/list?token=[put-your-token-here]&created_at=[start-date-log-optional]
-2. Add(POST): http://localhost:8080/api/log/add   [token, type, message]
-3. DeleteAll(GET): http://localhost:8080/api/log/deleteAll   [token]
+## How to use
 
-# WebRemoteLog-Go - Log Entity
+Follow the steps bellow:
 
-1. token = your session token, because you can see only logs from specific session token.
-2. type = can be any knew type of level log (error, fatal, info, warning, trace, debug, verbose, echo, warning, success)
-3. message = any log message
+```bash
+# Start your mongodb
+mongod &
 
-# WebRemoteLog-Go - Command line interface
+# Create the LogHistory collection into the WebRemoteLog database
+mongo WebRemoteLog --eval "db.createCollection('LogHistory')"
 
-Inside "commands" directory, you have some command line interface to make something automatic, like start, stop and update from git repository.
+# Clone this repo
+git clone git@github.com:prsolucoes/WebRemoteLog-Go.git
 
-1. start = it will kill current WebRemoteLog-Go process and start again
-2. stop  = it will kill current WebRemoteLog-Go process
-3. update  = it will update code from git, rebuild the service and restart the service for you
+# Build and run the app
+cd WebRemoteLog-Go
+./commands/install-go-deps.sh
+go build -o WebRemoteLog-Go
+./WebRemoteLog-Go
 
-So if you want start your server, you can use "start" command to do it for you.
+# Open the web interface
+open http://localhost:8080
+```
 
-# WebRemoteLog-Go - Alternative method to Build and Start project
+## The Docker way
 
-1. go build
-2. ./WebRemoteLog-Go
+You can run into a Docker container. This way is a good option if you don't have a `Golang` environment and the `MongoDB` server installed.
+Remeber if you  are using the OSX or Windows you need to have the `boot2docker` installed.
 
-# WebRemoteLog-Go - Author WebSite
+```bash
+# Create the Docker image
+make build
 
-> http://www.pcoutinho.com
+# Run into the container
+make container
 
-# WebRemoteLog-Go - License
+# Compile the app
+make compile
 
-MIT
+# Run the app
+make run
+
+# Open the web interface
+open http://`boot2docker ip`:8080
+```
+
+## API usage
+
+You need to send your token generated via web interface all the time.
+
+* **token**: your session token, because you can see only logs from specific session token.
+* **type**: can be any knew type of level log (error, fatal, info, warning, trace, debug, verbose, echo, warning, success)
+* **message**: any log message
+
+```bash
+#  To list the logs. You can send an optional date
+curl http://localhost:8080/api/log/list?token=<your-token>&created_at=<optional-start-date>
+
+# To save the log message
+curl -XPOST http://localhost:8080/api/log/add [token, type, message]
+
+# To clear the log message
+curl http://localhost:8080/api/log/deleteAll   [token]
+```
+
+## Command line interface
+
+Inside `commands` directory, there are some command line interface to make something automatic, like start, stop and update from git repository.
+
+* **start**: it will kill current WebRemoteLog-Go process and start again
+* **stop**: it will kill current WebRemoteLog-Go process
+* **update**: it will update code from git, rebuild the service and restart the service for you
+
+So if you want start your server, you can use `start` command to do it for you.
+
+## Contributors
+
+[Paulo Coutinho](http://www.pcoutinho.com) (Author)
+[Gustavo Henrique](http://about.me/gustavohenrique)
+
+## License
+
+[MIT license](http://opensource.org/licenses/MIT)
