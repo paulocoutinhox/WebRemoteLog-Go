@@ -2,6 +2,8 @@ WebRemoteLog-Go
 ===============
 > An API to manage remote log messages
 
+[![Demo](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshot.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
+
 WebRemoteLog-Go provides an API to store the log messages and a web interface
 to see and query the data into database.
 
