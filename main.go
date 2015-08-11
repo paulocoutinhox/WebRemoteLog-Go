@@ -1,9 +1,8 @@
 package main
 
 func main() {
-	// database connection
-	createConnection()
-
-	// routes
-	createRoutes()
+	Server = NewWebServer()
+	Server.CreateDatabase()
+	Server.CreateRouter()
+	Server.Start()
 }

@@ -16,5 +16,6 @@ go build
 echo "> Builded"
 echo "> Log will be store in: $LOG_FILE"
 echo "> Starting..."
+export GIN_MODE=release
 nohup $DIR/$EXECUTABLE >> $LOG_FILE 2>&1 </dev/null &
 echo "> Started"
