@@ -12,19 +12,19 @@ To run you need a MongoDB running on localhost:
 
 ** The application will try connect on your localhost mongdb
 
-# WebRemoteLog-Go - API
+# API
 
 1. List(GET): http://localhost:8080/api/log/list?token=[put-your-token-here]&created_at=[start-date-log-optional]
 2. Add(POST): http://localhost:8080/api/log/add   [token, type, message]
 3. DeleteAll(GET): http://localhost:8080/api/log/deleteAll   [token]
 
-# WebRemoteLog-Go - Log Entity
+# Log Entity
 
 1. token = your session token, because you can see only logs from specific session token.
 2. type = can be any knew type of level log (error, fatal, info, warning, trace, debug, verbose, echo, warning, success)
 3. message = any log message
 
-# WebRemoteLog-Go - Command line interface
+# Command line interface
 
 Inside "commands" directory, you have some command line interface to make something automatic, like start, stop and update from git repository.
 
@@ -34,15 +34,21 @@ Inside "commands" directory, you have some command line interface to make someth
 
 So if you want start your server, you can use "start" command to do it for you.
 
-# WebRemoteLog-Go - Alternative method to Build and Start project
+# Alternative method to Build and Start project
 
 1. go build
 2. ./WebRemoteLog-Go
 
-# WebRemoteLog-Go - Author WebSite
+# Screenshots
+
++[![Main interface](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshots/WebRemoteLog1.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
+
++[![Stats](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshots/WebRemoteLog2.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
+
+# Author WebSite
 
 > http://www.pcoutinho.com
 
-# WebRemoteLog-Go - License
+# License
 
 MIT
