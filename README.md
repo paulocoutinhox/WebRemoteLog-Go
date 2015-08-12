@@ -39,7 +39,7 @@ So if you want start your server, you can use "start" command to do it for you.
 1. go build
 2. ./WebRemoteLog-Go
 
-# Updates in Real Time
+# Updates In Real Time
 
 You dont need refresh your browser, everything is updated in real time. 
 
