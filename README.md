@@ -17,6 +17,7 @@ To run you need a MongoDB running on localhost:
 1. List(GET): http://localhost:8080/api/log/list?token=[put-your-token-here]&created_at=[start-date-log-optional]
 2. Add(POST): http://localhost:8080/api/log/add   [token, type, message]
 3. DeleteAll(GET): http://localhost:8080/api/log/deleteAll   [token]
+4. StatsByType(GET): http://localhost:8080/api/log/statsByType   [token]
 
 # Log Entity
 
