@@ -10,8 +10,9 @@ var LogHistory = new function()
 	var filterMessageTmp                    = "";
 	var request;
 
-	this.colorList    = [];
-	this.lastDateTime = Util.dateToMongoDateString(new Date());
+	this.colorList       = [];
+	this.colorListByType = [];
+	this.lastDateTime    = Util.dateToMongoDateString(new Date());
 
 	this.initialize = function()
 	{
@@ -193,15 +194,17 @@ var LogHistory = new function()
 				   {
 					   for (var x = 0; x < data.length; x++)
 					   {
+					        var color = LogHistory.getColorForIndexAndType(x, data[x].type);
+
 					        chartData.push({
 							    value: data[x].quantity,
 							    label: data[x].type,
-							    color: LogHistory.colorList[x],
+							    color: color,
 						    });
 
 						    chartLegend += '' +
 						    '<li>' +
-						    '    <span class="chart-legend-color" style="background-color: ' + LogHistory.colorList[x] + '"></span>' +
+						    '    <span class="chart-legend-color" style="background-color: ' + color + '"></span>' +
 						    '    <span class="chart-legend-label">' + data[x].type + ' (' + data[x].quantity + ')</span>' +
 						    '</li>';
 
@@ -251,11 +254,7 @@ var LogHistory = new function()
 	this.startAutoGetNewestLogStatsByTypeChart = function()
 	{
 		LogHistory.getToken();
-
-		for (var x = 0; x < 255; x++)
-		{
-		    this.colorList.push(Util.getRandomColor());
-		}
+		LogHistory.initializeColorlist();
 
 		var seconds = 5;
 		LogHistory.getNewestLogStatsByTypeChart();
@@ -444,6 +443,38 @@ var LogHistory = new function()
 	this.redirectToLogHistory = function()
 	{
 	    Util.redirect("/log/index?token=" + this.token);
+	}
+
+	this.initializeColorlist = function()
+	{
+		for (var x = 0; x < 255; x++)
+		{
+			this.colorList.push(Util.getRandomColor());
+		}
+
+		this.colorListByType.push("error", "fatal", "info", "information", "warn", "warning", "verbose", "debug", "trace", "echo", "success");
+
+		this.colorListByType["error"]       = '#f44336';
+		this.colorListByType["fatal"]       = '#b71c1c';
+		this.colorListByType["info"]        = '#2196F3';
+		this.colorListByType["information"] = this.colorListByType["info"];
+		this.colorListByType["warn"]        = '#FFEB3B';
+		this.colorListByType["warning"]     = this.colorListByType["warn"];
+		this.colorListByType["verbose"]     = '#42A5F5';
+		this.colorListByType["debug"]       = '#4FC3F7';
+		this.colorListByType["trace"]       = '#4DD0E1';
+		this.colorListByType["echo"]        = '#81C784';
+		this.colorListByType["success"]     = '#43A047';
+	}
+
+	this.getColorForIndexAndType = function(index, type)
+	{
+	    if (this.colorListByType.indexOf(type) < 0)
+	    {
+	        return this.colorList[index];
+	    }
+
+	    return this.colorListByType[type];
 	}
 
 };

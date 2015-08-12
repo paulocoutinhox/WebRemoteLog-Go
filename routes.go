@@ -162,7 +162,9 @@ func (s *APIController) APILogStatsByType(c *gin.Context) {
 		},
 		bson.M{
 			"$project" : bson.M{
-				"type" : "$_id",
+				"type" : bson.M{
+					"$toLower": "$_id",
+				},
 				"quantity" : "$count",
 				"_id" : 0,
 			},
