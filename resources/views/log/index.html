@@ -17,19 +17,29 @@
 
 	</div>
 
-	<!-- TABLE - DATA -->
-	<div class="table-responsive">
-		<table id="table-log" class="table table-condensed table-striped table-hover table-log">
-			<thead>
-			<tr>
-				<th class="col1">TYPE</th>
-				<th class="col2">MESSAGE</th>
-				<th class="col3" style="white-space: nowrap;">CREATED AT</th>
-			</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+	<!-- RESULTS DATA -->
+	<div id="results"></div>
+
+	<div id="no-results">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Message</h3>
+			</div>
+			<div class="panel-body">
+				No results :(
+			</div>
+		</div>
+	</div>
+
+	<div id="loading-results">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Loading...</h3>
+			</div>
+			<div class="panel-body">
+				Please wait, we are loading results...
+			</div>
+		</div>
 	</div>
 
 </div>
@@ -40,7 +50,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-						aria-hidden="true">&times;</span></button>
+					aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">Options</h4>
 			</div>
 			<div class="modal-body" style="text-align: center">
@@ -91,7 +101,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-						aria-hidden="true">&times;</span></button>
+					aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">Log details</h4>
 			</div>
 			<div class="modal-body" style="text-align: center">
@@ -125,6 +135,8 @@
 	$(document).ready(function() {
 		LogHistory.initialize();
 	});
+
+
 </script>
 
 {{end}}

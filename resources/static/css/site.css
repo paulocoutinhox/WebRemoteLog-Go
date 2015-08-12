@@ -155,13 +155,12 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-.table-log .col1,
-.table-log .col3 {
-	text-transform: uppercase;
-	text-align: center
+.panel-title {
+	font-size: 14px;
+	text-transform: capitalize;
 }
 
-.table-log .col2 {
+.panel-body {
 	word-wrap: break-word;
 	-ms-word-break: break-all;
 	word-break: break-all;
@@ -171,7 +170,7 @@ a.desc:after {
 	hyphens: auto;
 }
 
-.table-log td.col2 {
+.panel-body {
 	cursor: pointer;
 }
 
@@ -206,4 +205,19 @@ a.desc:after {
 
 .filters-container-box h4 {
 	margin: 0 0 10px 0;
+}
+
+#no-results {
+	padding: 10px;
+	display: block;
+}
+
+#loading-results {
+	padding: 10px;
+	display: none;
+}
+
+#results {
+	padding: 10px;
+	display: none;
 }

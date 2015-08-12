@@ -13,8 +13,6 @@ var LogHistory = new function()
 
 	this.initialize = function()
 	{
-		$('.scroll-top-wrapper').addClass('show');
-		
 		$('#logDetailsModal, #optionsModal').on('show.bs.modal', function(event) {
 			$('.scroll-top-wrapper').removeClass('show');
 			$('.scroll-top-wrapper').addClass('hidden');
@@ -47,33 +45,55 @@ var LogHistory = new function()
 		
 		if (type == 'error' || type == 'fatal')
 		{
-			typeHtml = '<span class="label label-danger">' + type + '</span>';
+			typeHtml = 'panel-danger';
 		}
 		else if (type == 'info' || type == 'information')
 		{
-			typeHtml = '<span class="label label-info">' + type + '</span>';
+			typeHtml = 'panel-info';
 		}
 		else if (type == 'warn' || type == 'warning')
 		{
-			typeHtml = '<span class="label label-warning">' + type + '</span>';
+			typeHtml = 'panel-warning';
 		}
 		else if (type == 'debug' || type == 'trace' || type == 'echo' || type == 'verbose')
 		{
-			typeHtml = '<span class="label label-primary">' + type + '</span>';
+			typeHtml = 'panel-primary';
 		}
 		else if (type == 'success')
 		{
-			typeHtml = '<span class="label label-success">' + type + '</span>';
+			typeHtml = 'panel-success';
 		}
 		else 
 		{
-			typeHtml = '<span class="label label-default">' + type + '</span>';
+			typeHtml = 'panel-primary';
 		}
 		
 		var createdAtConverted = Util.dateToUserStringUsingHTML(Util.convertUTCDateToLocalDate(new Date(createdAt)));
-		
-		var html = '<tr id="log-row-' + id + '" class="log-row log-row-type-' + type.toLowerCase() + '"><td class="col1">' + typeHtml + '</td><td class="col2" onclick="LogHistory.showDetails(\'' + id + '\')">' + message + '</td><td class="col3">' + createdAtConverted + '</td></tr>';
-		
+
+		/*
+		<div class="panel panel-primary">
+        			<div class="panel-heading">
+        				<h3 class="panel-title">Message</h3>
+        			</div>
+        			<div class="panel-body">
+        				No results :(
+        			</div>
+        		</div>
+		*/
+
+		var html = '' +
+		'<div id="log-row-' + id + '" class="panel ' + typeHtml + ' log-row log-row-type-' + type.toLowerCase() + '" onclick="LogHistory.showDetails(\'' + id + '\')">' +
+		'    <div class="panel-heading">' +
+		'        <h3 class="panel-title">' +
+		'            <p>Type: <span id="log-data-type-' + id + '">' + type + '</span></p>' +
+		'            <p>Created at: <span id="log-data-created-at-' + id + '">' + createdAtConverted + '</span></p>' +
+		'        </h3>' +
+		'    </div>' +
+		'    <div class="panel-body">' +
+		'        <span id="log-data-message-' + id + '">' + message + '<span>'
+		'    </div>' +
+		'</div>';
+
 		if (Util.isOnBottomOfDocument())
 		{
 			this.isOnBottomOfDocument = true;
@@ -83,7 +103,8 @@ var LogHistory = new function()
 			this.isOnBottomOfDocument = false;
 		}
 		
-		$('#table-log').append(html);
+		$('#results').append(html);
+		this.showResults();
 	}
 
 	this.getNewest = function()
@@ -92,7 +113,7 @@ var LogHistory = new function()
 		{
 			return;
 		}
-		
+
 		isGettingNewest = true;
 		
 		var lastDateTimeToSend     = (Util.isUndefined(this.lastDateTime) ? "" : this.lastDateTime);
@@ -137,9 +158,11 @@ var LogHistory = new function()
 		       }
 		       
 		       isGettingNewest = false;
+		       LogHistory.showResultsOrNoResultsByLogsQuantity();
 		   },
 		   error: function() {
 		      isGettingNewest = false;
+		      LogHistory.showResultsOrNoResultsByLogsQuantity();
 		   }
 		});
 	}
@@ -164,10 +187,13 @@ var LogHistory = new function()
 	this.clear = function()
 	{
 		$('.log-row').remove();
+		this.showNoResults();
 	}
 	
 	this.deleteAllByToken = function()
 	{
+		this.showLoadingResults();
+
 		$.ajax({
 		   url: '/api/log/deleteAll?token=' + this.token,
 		   type: 'GET',
@@ -187,9 +213,9 @@ var LogHistory = new function()
 	
 	this.showDetails = function(logId)
 	{		
-		$('#logDetailsType').html($('#log-row-' + logId + ' > td.col1').html());
-		$('#logDetailsMessage').text($('#log-row-' + logId + ' > td.col2').html());
-		$('#logDetailsCreatedAt').html($('#log-row-' + logId + ' > td.col3').html());				
+		$('#logDetailsType').html($('#log-data-type-' + logId + '').html());
+		$('#logDetailsMessage').text($('#log-data-message-' + logId + '').html());
+		$('#logDetailsCreatedAt').html($('#log-data-created-at-' + logId + '').html());
 		$('#logDetailsModal').modal();
 	}
 	
@@ -199,6 +225,7 @@ var LogHistory = new function()
 		$('#filterMessage').val('');
 		this.resetRequest();		
 		this.clear();
+		this.showLoadingResults();
 	}
 	
 	this.showLogFilters = function(show)
@@ -218,6 +245,7 @@ var LogHistory = new function()
 		this.resetRequest();
 		this.filterMessageTmp = $('#filterMessage').val();
 		this.clear();
+		this.showLoadingResults();
 	}
 	
 	this.resetRequest = function()
@@ -240,6 +268,51 @@ var LogHistory = new function()
 		if (total > offset)
 		{
 			$('.log-row').slice(0, offsetToRemove).remove();
+		}
+	}
+
+	this.showResults = function()
+	{
+		if ($('#results').is(':hidden'))
+		{
+		    $('#results').show();
+		}
+
+		$('#no-results').hide();
+		$('#loading-results').hide();
+	}
+
+	this.showNoResults = function()
+	{
+		if ($('#no-results').is(':hidden'))
+		{
+		    $('#no-results').show();
+		}
+
+		$('#results').hide();
+		$('#loading-results').hide();
+	}
+
+	this.showLoadingResults = function()
+	{
+		if ($('#loading-results').is(':hidden'))
+		{
+		    $('#loading-results').show();
+		}
+
+		$('#results').hide();
+		$('#no-results').hide();
+	}
+
+	this.showResultsOrNoResultsByLogsQuantity = function()
+	{
+		if ($('.log-row').length > 0)
+		{
+		    this.showResults();
+		}
+		else
+		{
+			this.showNoResults();
 		}
 	}
 
