@@ -41,9 +41,9 @@ So if you want start your server, you can use "start" command to do it for you.
 
 # Screenshots
 
-+[![Main interface](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshots/WebRemoteLog1.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
+[![Main interface](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshots/WebRemoteLog1.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
 
-+[![Stats](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshots/WebRemoteLog2.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
+[![Stats](https://github.com/prsolucoes/WebRemoteLog-Go/raw/master/screenshots/WebRemoteLog2.png)](http://github.com/prsolucoes/WebRemoteLog-Go)
 
 # Author WebSite
 
