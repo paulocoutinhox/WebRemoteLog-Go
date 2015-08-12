@@ -15,7 +15,7 @@ type HomeController struct {}
 func (s *HomeController) Register() {
 	log.Printf("Memory address of server: %v", &Server)
 	Server.Router.GET("/", s.HomeIndex)
-	log.Println("HomeController Register : OK")
+	log.Println("HomeController register : OK")
 }
 
 func (s *HomeController) HomeIndex(c *gin.Context) {
@@ -28,7 +28,7 @@ type LogController struct {}
 func (s *LogController) Register() {
 	Server.Router.GET("/log/index", s.LogIndex)
 	Server.Router.GET("/log/token", s.LogToken)
-	log.Println("LogController Register : OK")
+	log.Println("LogController register : OK")
 }
 
 func (s *LogController) LogToken(c *gin.Context) {
@@ -52,7 +52,7 @@ func (s *APIController) Register() {
 	Server.Router.POST("/api/log/add", s.APILogAdd)
 	Server.Router.GET("/api/log/list", s.APILogList)
 	Server.Router.GET("/api/log/deleteAll", s.APILogDeleteAll)
-	log.Println("APIController Register : OK")
+	log.Println("APIController register : OK")
 }
 
 func (s *APIController) APILogAdd(c *gin.Context) {
