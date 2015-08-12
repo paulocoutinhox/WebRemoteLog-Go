@@ -202,7 +202,7 @@ var LogHistory = new function()
 						    chartLegend += '' +
 						    '<li>' +
 						    '    <span class="chart-legend-color" style="background-color: ' + LogHistory.colorList[x] + '"></span>' +
-						    '    <span class="chart-legend-label">' + data[x].type + '</span>' +
+						    '    <span class="chart-legend-label">' + data[x].type + ' (' + data[x].quantity + ')</span>' +
 						    '</li>';
 
 						    showResults = true;
