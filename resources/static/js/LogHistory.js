@@ -93,7 +93,7 @@ var LogHistory = new function()
 		'        </h3>' +
 		'    </div>' +
 		'    <div class="panel-body">' +
-		'        <span id="log-data-message-' + id + '">' + message + '<span>'
+		'        <span id="log-data-message-' + id + '">' + message + '</span>'
 		'    </div>' +
 		'</div>';
 
