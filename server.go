@@ -15,7 +15,10 @@ type WebServer struct {
 }
 
 func NewWebServer() *WebServer {
-	server := WebServer{DB : new(Database), Router : gin.Default()}
+	router := gin.New()
+	router.Use(gin.Recovery())
+
+	server := WebServer{DB : new(Database), Router : router}
 	return &server
 }
 
