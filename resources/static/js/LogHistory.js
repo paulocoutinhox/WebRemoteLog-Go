@@ -223,7 +223,9 @@ var LogHistory = new function()
 
 				   var ctx = document.getElementById('chart-canvas').getContext('2d');
 				   var chart = new Chart(ctx).Doughnut(chartData, {
-						animation: false
+						animation: false,
+						segmentShowStroke: true,
+						segmentStrokeWidth: 1
 				   });
 			   }
 			   else
