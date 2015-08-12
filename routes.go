@@ -28,6 +28,7 @@ type LogController struct {}
 func (s *LogController) Register() {
 	Server.Router.GET("/log/index", s.LogIndex)
 	Server.Router.GET("/log/token", s.LogToken)
+	Server.Router.GET("/log/statsByType", s.LogStatsByType)
 	log.Println("LogController register : OK")
 }
 
@@ -45,6 +46,16 @@ func (s *LogController) LogIndex(c *gin.Context) {
 	renderTemplate(c.Writer, "log/index", map[string]string{"ContainerClass": "container-fluid", "WrapClass": "wrap-log", "FooterClass": "no-footer", "ShowLogMenu": "1"})
 }
 
+func (s *LogController) LogStatsByType(c *gin.Context) {
+	token := c.Query("token")
+
+	if token == "" {
+		c.Redirect(http.StatusMovedPermanently, "/log/token")
+	}
+
+	renderTemplate(c.Writer, "log/statsByType", map[string]string{"ContainerClass": "container-fluid", "WrapClass": "wrap-log", "FooterClass": "no-footer", "ShowLogMenu": "1"})
+}
+
 // API Controller
 type APIController struct {}
 
@@ -52,6 +63,7 @@ func (s *APIController) Register() {
 	Server.Router.POST("/api/log/add", s.APILogAdd)
 	Server.Router.GET("/api/log/list", s.APILogList)
 	Server.Router.GET("/api/log/deleteAll", s.APILogDeleteAll)
+	Server.Router.GET("/api/log/statsByType", s.APILogStatsByType)
 	log.Println("APIController register : OK")
 }
 
@@ -62,20 +74,20 @@ func (s *APIController) APILogAdd(c *gin.Context) {
 	coll := session.DB("WebRemoteLog").C("LogHistory")
 
 	doc := &LogHistory{}
-	doc.DebugToken = c.PostForm("token")
-	doc.LogType    = c.PostForm("type")
-	doc.LogMessage = c.PostForm("message")
+	doc.Token      = c.PostForm("token")
+	doc.Type       = c.PostForm("type")
+	doc.Message    = c.PostForm("message")
 	doc.CreatedAt  = time.Now()
 
-	strings.ToLower(strings.TrimSpace(doc.LogType))
+	strings.ToLower(strings.TrimSpace(doc.Type))
 
 	coll.Insert(doc)
 }
 
 func (s *APIController) APILogList(c *gin.Context) {
-	logDebugToken   := c.Query("token")
-	logCreatedAt, _ := time.Parse("2006-01-02T15:04:05.999", c.Query("created_at"))
-	filterMessage   := c.Query("filter-message")
+	token         := c.Query("token")
+	createdAt, _  := time.Parse("2006-01-02T15:04:05.999", c.Query("created_at"))
+	filterMessage := c.Query("filter-message")
 
 	session := Server.DB.Session.Clone()
 	defer session.Close()
@@ -85,12 +97,12 @@ func (s *APIController) APILogList(c *gin.Context) {
 	var results []LogHistory
 	var conditions = bson.M{}
 
-	conditions["debugToken"] = logDebugToken
+	conditions["token"] = token
 
 	if filterMessage == "" {
-		conditions["createdAt"]  = bson.M{"$gt": logCreatedAt}
+		conditions["createdAt"]  = bson.M{"$gt": createdAt}
 	} else {
-		conditions["logMessage"] = bson.RegEx{Pattern: filterMessage, Options: "i"}
+		conditions["message"] = bson.RegEx{Pattern: filterMessage, Options: "i"}
 	}
 
 	err := coll.Find(conditions).Sort("createdAt").All(&results)
@@ -104,7 +116,7 @@ func (s *APIController) APILogList(c *gin.Context) {
 }
 
 func (s *APIController) APILogDeleteAll(c *gin.Context) {
-	logDebugToken := c.Query("token")
+	token := c.Query("token")
 
 	session := Server.DB.Session.Clone()
 	defer session.Close()
@@ -113,7 +125,7 @@ func (s *APIController) APILogDeleteAll(c *gin.Context) {
 
 	var result []LogHistory
 	_, err := coll.RemoveAll(bson.M{
-		"debugToken": logDebugToken,
+		"token": token,
 	})
 
 	if err != nil {
@@ -122,5 +134,42 @@ func (s *APIController) APILogDeleteAll(c *gin.Context) {
 	}
 
 	c.JSON(200, result)
+}
+
+func (s *APIController) APILogStatsByType(c *gin.Context) {
+	token := c.Query("token")
+
+	session := Server.DB.Session.Clone()
+	defer session.Close()
+
+	coll := session.DB("WebRemoteLog").C("LogHistory")
+
+	var results []interface{}
+
+	pipe := coll.Pipe([]bson.M{
+		bson.M{
+			"$match" : bson.M{
+				"token": token,
+			},
+		},
+		bson.M{
+			"$group" : bson.M{
+				"_id" : "$type",
+				"count" : bson.M{
+					"$sum" : 1,
+				},
+			},
+		},
+		bson.M{
+			"$project" : bson.M{
+				"type" : "$_id",
+				"quantity" : "$count",
+				"_id" : 0,
+			},
+		},
+	})
+	pipe.All(&results)
+
+	c.JSON(200, results)
 }
 

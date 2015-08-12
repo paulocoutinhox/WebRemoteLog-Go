@@ -71,6 +71,12 @@
 				<hr/>
 
 				<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn btn-primary" onclick="LogHistory.redirectToLogStatsByType()">Go to stats by type</button>
+				</div>
+
+				<hr/>
+
+				<div class="btn-group" role="group" aria-label="...">
 					<button type="button" class="btn btn-primary" onclick="LogHistory.showLogFilters(true)">Show
 						filters
 					</button>
@@ -135,8 +141,6 @@
 	$(document).ready(function() {
 		LogHistory.initialize();
 	});
-
-
 </script>
 
 {{end}}

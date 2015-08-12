@@ -33,8 +33,8 @@ func (s *Database) CreateCollections() {
 }
 
 func (s *Database) CreateIndexes() {
-	s.Session.DB("WebRemoteLog").C("LogHistory").EnsureIndex(mgo.Index{Key: []string{"debugToken"}, Unique: false, DropDups: true, Background: false, Sparse: true})
-	s.Session.DB("WebRemoteLog").C("LogHistory").EnsureIndex(mgo.Index{Key: []string{"logType"}, Unique: false, DropDups: true, Background: false, Sparse: true})
+	s.Session.DB("WebRemoteLog").C("LogHistory").EnsureIndex(mgo.Index{Key: []string{"token"}, Unique: false, DropDups: true, Background: false, Sparse: true})
+	s.Session.DB("WebRemoteLog").C("LogHistory").EnsureIndex(mgo.Index{Key: []string{"type"}, Unique: false, DropDups: true, Background: false, Sparse: true})
 	s.Session.DB("WebRemoteLog").C("LogHistory").EnsureIndex(mgo.Index{Key: []string{"createdAt"}, Unique: false, DropDups: true, Background: false, Sparse: true})
 	log.Println("Indexes creation : OK")
 }

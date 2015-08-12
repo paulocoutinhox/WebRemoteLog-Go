@@ -221,3 +221,49 @@ a.desc:after {
 	padding: 10px;
 	display: none;
 }
+
+#chart-container {
+	padding: 0;
+}
+
+#chart-canvas {
+	padding: 0;
+}
+
+#chart-results {
+	display:none;
+	text-align: center;
+}
+
+#chart-no-results {
+	display:none;
+	text-align: center;
+	padding: 20px 0;
+}
+
+#chart-loading-results {
+	text-align: center;
+	padding: 20px 0;
+}
+
+#chart-legend {
+    list-style: none;
+    margin: 20px 0;
+}
+
+#chart-legend li {
+    float: left;
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+}
+
+#chart-legend .chart-legend-color {
+	padding: 10px;
+	float: left;
+}
+
+#chart-legend .chart-legend-label {
+	margin-left: 10px;
+	float: left;
+}

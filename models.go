@@ -7,8 +7,8 @@ import (
 
 type LogHistory struct {
 	ID         bson.ObjectId `bson:"_id,omitempty"`
-	DebugToken string        `bson:"debugToken"`
-	LogType    string        `bson:"logType"`
-	LogMessage string        `bson:"logMessage"`
+	Token      string        `bson:"token"`
+	Type       string        `bson:"type"`
+	Message    string        `bson:"message"`
 	CreatedAt  time.Time     `bson:"createdAt"`
 }

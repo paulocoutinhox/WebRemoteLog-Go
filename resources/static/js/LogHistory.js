@@ -1,14 +1,16 @@
 var LogHistory = new function()
 {
 
-	var token                = "";
-	var lastDateTime         = null;
-	var isGettingNewest      = false;
-	var firstTime            = true;
-	var isOnBottomOfDocument = false;
-	var filterMessageTmp     = "";
+	var token                               = "";
+	var lastDateTime                        = null;
+	var isGettingNewest                     = false;
+	var isGettingNewestLogStatsByTypeChart  = false;
+	var firstTime                           = true;
+	var isOnBottomOfDocument                = false;
+	var filterMessageTmp                    = "";
 	var request;
 
+	this.colorList    = [];
 	this.lastDateTime = Util.dateToMongoDateString(new Date());
 
 	this.initialize = function()
@@ -138,7 +140,7 @@ var LogHistory = new function()
 					       if (!$("#log-row-" + data[x].ID).length > 0)
 					       {
 						       LogHistory.lastDateTime = Util.dateToMongoDateString(new Date(data[x].CreatedAt));
-						       LogHistory.addLog(data[x].ID, data[x].LogType, data[x].LogMessage, data[x].CreatedAt);
+						       LogHistory.addLog(data[x].ID, data[x].Type, data[x].Message, data[x].CreatedAt);
 
 						       if ($('#chkAutoScrollBottom').is(':checked'))
 							   {
@@ -166,6 +168,74 @@ var LogHistory = new function()
 		   }
 		});
 	}
+
+	this.getNewestLogStatsByTypeChart = function()
+	{
+		if (isGettingNewestLogStatsByTypeChart)
+		{
+		    return;
+		}
+
+		isGettingNewestLogStatsByTypeChart = true;
+
+		var chartData = [];
+		var chartLegend = "";
+		var request = $.ajax({
+		   url: '/api/log/statsByType?token=' + this.token,
+		   type: 'GET',
+		   dataType: 'json',
+		   success: function(data) {
+			   var showResults = false;
+
+			   if (!Util.isUndefined(data))
+			   {
+				   if (data != "" && data != null)
+				   {
+					   for (var x = 0; x < data.length; x++)
+					   {
+					        chartData.push({
+							    value: data[x].quantity,
+							    label: data[x].type,
+							    color: LogHistory.colorList[x],
+						    });
+
+						    chartLegend += '' +
+						    '<li>' +
+						    '    <span class="chart-legend-color" style="background-color: ' + LogHistory.colorList[x] + '"></span>' +
+						    '    <span class="chart-legend-label">' + data[x].type + '</span>' +
+						    '</li>';
+
+						    showResults = true;
+					   }
+				   }
+			   }
+
+			   if (showResults)
+			   {
+			   	   $('#chart-legend').html(chartLegend);
+
+			   	   LogHistory.showResults('chart');
+
+			       Chart.defaults.global.responsive = true;
+
+				   var ctx = document.getElementById('chart-canvas').getContext('2d');
+				   var chart = new Chart(ctx).Doughnut(chartData, {
+						animation: false
+				   });
+			   }
+			   else
+			   {
+			   	   LogHistory.showNoResults('chart');
+			   }
+
+			   isGettingNewestLogStatsByTypeChart = false;
+		   },
+		   error: function() {
+			   LogHistory.showNoResults('chart');
+			   isGettingNewestLogStatsByTypeChart = false;
+		   }
+		});
+	}
 	
 	this.getToken = function()
 	{
@@ -176,6 +246,20 @@ var LogHistory = new function()
 	{
 		var seconds = 1;
 		setInterval(function(){ LogHistory.getNewest(); }, (seconds * 1000));
+	}
+
+	this.startAutoGetNewestLogStatsByTypeChart = function()
+	{
+		LogHistory.getToken();
+
+		for (var x = 0; x < 255; x++)
+		{
+		    this.colorList.push(Util.getRandomColor());
+		}
+
+		var seconds = 5;
+		LogHistory.getNewestLogStatsByTypeChart();
+		setInterval(function(){ LogHistory.getNewestLogStatsByTypeChart(); }, (seconds * 1000));
 	}
 
 	this.startAutoClean = function()
@@ -271,49 +355,95 @@ var LogHistory = new function()
 		}
 	}
 
-	this.showResults = function()
+	this.showResults = function(prefix)
 	{
-		if ($('#results').is(':hidden'))
+		if (Util.isUndefined(prefix))
 		{
-		    $('#results').show();
-		}
-
-		$('#no-results').hide();
-		$('#loading-results').hide();
-	}
-
-	this.showNoResults = function()
-	{
-		if ($('#no-results').is(':hidden'))
-		{
-		    $('#no-results').show();
-		}
-
-		$('#results').hide();
-		$('#loading-results').hide();
-	}
-
-	this.showLoadingResults = function()
-	{
-		if ($('#loading-results').is(':hidden'))
-		{
-		    $('#loading-results').show();
-		}
-
-		$('#results').hide();
-		$('#no-results').hide();
-	}
-
-	this.showResultsOrNoResultsByLogsQuantity = function()
-	{
-		if ($('.log-row').length > 0)
-		{
-		    this.showResults();
+			prefix = "";
 		}
 		else
 		{
-			this.showNoResults();
+		    prefix += "-";
 		}
+
+		if ($('#' + prefix + 'results').is(':hidden'))
+		{
+		    $('#' + prefix + 'results').show();
+		}
+
+		$('#' + prefix + 'no-results').hide();
+		$('#' + prefix + 'loading-results').hide();
+	}
+
+	this.showNoResults = function(prefix)
+	{
+		if (Util.isUndefined(prefix))
+		{
+			prefix = "";
+		}
+		else
+		{
+		    prefix += "-";
+		}
+
+		if ($('#' + prefix + 'no-results').is(':hidden'))
+		{
+		    $('#' + prefix + 'no-results').show();
+		}
+
+		$('#' + prefix + 'results').hide();
+		$('#' + prefix + 'loading-results').hide();
+	}
+
+	this.showLoadingResults = function(prefix)
+	{
+		if (Util.isUndefined(prefix))
+		{
+			prefix = "";
+		}
+		else
+		{
+		    prefix += "-";
+		}
+
+		if ($('#' + prefix + 'loading-results').is(':hidden'))
+		{
+		    $('#' + prefix + 'loading-results').show();
+		}
+
+		$('#' + prefix + 'results').hide();
+		$('#' + prefix + 'no-results').hide();
+	}
+
+	this.showResultsOrNoResultsByLogsQuantity = function(prefix)
+	{
+		if (Util.isUndefined(prefix))
+		{
+			prefix = "";
+		}
+		else
+		{
+		    prefix += "-";
+		}
+
+		if ($('.log-row').length > 0)
+		{
+		    this.showResults(prefix);
+		}
+		else
+		{
+			this.showNoResults(prefix);
+		}
+	}
+
+	this.redirectToLogStatsByType = function()
+	{
+	    Util.redirect("/log/statsByType?token=" + this.token);
+	}
+
+	this.redirectToLogHistory = function()
+	{
+	    Util.redirect("/log/index?token=" + this.token);
 	}
 
 };
