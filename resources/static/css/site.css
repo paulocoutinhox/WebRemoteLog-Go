@@ -199,8 +199,8 @@ a.desc:after {
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	padding: 10px;
-	margin: 15px;
-	margin-bottom: 30px;
+	margin: 10px;
+	margin-bottom: 20px;
 }
 
 .filters-container-box h4 {
