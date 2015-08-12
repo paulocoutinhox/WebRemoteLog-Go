@@ -41,7 +41,8 @@ So if you want start your server, you can use "start" command to do it for you.
 
 # Updates in Real Time
 
-You dont need refresh your browser, everything is updated in real time.  
+You dont need refresh your browser, everything is updated in real time. 
+
 You can leave the stats charts opened in one browser window for example and see the chart being refreshed in real time.  
 
 # Screenshots
