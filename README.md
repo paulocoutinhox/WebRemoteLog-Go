@@ -1,3 +1,5 @@
+# (DISCONTINUED - MOVED TO: https://github.com/prsolucoes/logstack)
+
 # WebRemoteLog-Go
 
 To run you need a MongoDB running on localhost:
