@@ -1,5 +1,8 @@
 # (DISCONTINUED - MOVED TO: https://github.com/prsolucoes/logstack)
 
+# Support with donation
+[![Support with donation](http://donation.pcoutinho.com/images/donate-button.png)](http://donation.pcoutinho.com/)
+
 # WebRemoteLog-Go
 
 To run you need a MongoDB running on localhost:
